@@ -6,6 +6,7 @@ import { TimingChart } from './components/TimingChart';
 import { AlgorithmExplainer } from './components/AlgorithmExplainer';
 import { NavBar, type Route } from './components/NavBar';
 import { PasswordPolicyPage } from './components/PasswordPolicyPage';
+import { PasswordManagerPage } from './components/PasswordManagerPage';
 import { hashAll } from './lib/hashers';
 import type { AlgorithmName, HashResult } from './types/hash';
 import { I18nProvider, useT } from './i18n/I18nContext';
@@ -13,7 +14,9 @@ import { I18nProvider, useT } from './i18n/I18nContext';
 const ALGORITHMS: AlgorithmName[] = ['SHA-256', 'bcrypt', 'scrypt', 'Argon2id'];
 
 function parseRoute(): Route {
-  return window.location.hash === '#/policy' ? 'policy' : 'hash';
+  if (window.location.hash === '#/policy') return 'policy';
+  if (window.location.hash === '#/manager') return 'manager';
+  return 'hash';
 }
 
 function HashPage() {
@@ -213,7 +216,8 @@ function AppShell() {
   }, []);
 
   const navigate = (next: Route) => {
-    window.location.hash = next === 'policy' ? '#/policy' : '#/';
+    window.location.hash =
+      next === 'policy' ? '#/policy' : next === 'manager' ? '#/manager' : '#/';
     setRoute(next);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
@@ -221,7 +225,13 @@ function AppShell() {
   return (
     <div className="font-sans bg-[#F7F4ED] min-h-screen">
       <NavBar route={route} onNavigate={navigate} />
-      {route === 'policy' ? <PasswordPolicyPage /> : <HashPage />}
+      {route === 'policy' ? (
+        <PasswordPolicyPage />
+      ) : route === 'manager' ? (
+        <PasswordManagerPage />
+      ) : (
+        <HashPage />
+      )}
     </div>
   );
 }

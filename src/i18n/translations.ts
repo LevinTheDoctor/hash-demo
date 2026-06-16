@@ -7,7 +7,7 @@ export const LANG_META: Record<Lang, { label: string; native: string; dir: 'ltr'
 };
 
 export interface Dict {
-  nav: { brand: string; hash: string; policy: string; language: string };
+  nav: { brand: string; hash: string; policy: string; manager: string; language: string };
   hashPage: {
     title: string;
     whatIsHashing: string;
@@ -124,10 +124,47 @@ export interface Dict {
     };
     footer: string;
   };
+  manager: {
+    kicker: string;
+    h1Line1: string;
+    h1Line2: string;
+    intro: { lead: string; em: string; tail: string };
+    chapters: { num: string; title: string }[];
+    s01: {
+      kicker: string;
+      title: string;
+      body: string;
+      pillars: { num: string; title: string; body: string }[];
+    };
+    s02: {
+      kicker: string;
+      title: string;
+      body: string;
+      options: { headline: string; tagline: string; body: string; pros: string[]; cons: string[] }[];
+      proHeader: string;
+      conHeader: string;
+    };
+    s03: {
+      kicker: string;
+      title: string;
+      body: string;
+      tableTitle: string;
+      cols: { feature: string; bitwarden: string; onepassword: string; nordpass: string };
+      rows: { feature: string; bitwarden: string; onepassword: string; nordpass: string }[];
+      verdict: string;
+    };
+    s04: {
+      kicker: string;
+      title: string;
+      body: string;
+      tips: { headline: string; body: string }[];
+    };
+    footer: string;
+  };
 }
 
 const de: Dict = {
-  nav: { brand: 'Hash-Lab', hash: 'Hash-Demo', policy: 'Password Policy', language: 'Sprache' },
+  nav: { brand: 'Hash-Lab', hash: 'Hash-Demo', policy: 'Password Policy', manager: 'Password Manager', language: 'Sprache' },
   hashPage: {
     title: 'Hash-Algorithmen im Vergleich',
     whatIsHashing: 'Was ist Hashing?',
@@ -140,7 +177,7 @@ const de: Dict = {
       'Hinweis: bcrypt und Argon2id laufen hier als WASM/JS im Browser. Server-seitige native Implementierungen sind schneller, aber das Verhältnis zu SHA-256 bleibt gleich.',
     algoTitle: 'Wie funktionieren die Algorithmen?',
     algoSubtitle: 'Eine kurze Übersicht über das Innenleben jedes Verfahrens.',
-    kicker: 'Field Guide · Vol. 02',
+    kicker: 'Field Guide · Vol. 01',
     h1Line1: 'Vier Funktionen,',
     h1Line2: 'vier Geschwindigkeiten.',
     lead: 'Zwischen einem Hash, der in einer Mikrosekunde fällt, und einem, der eine halbe Sekunde braucht, liegen sechs Größenordnungen — und das ist genau der',
@@ -254,7 +291,7 @@ const de: Dict = {
     crackLt1s: '< 1 Sekunde',
   },
   policy: {
-    kicker: 'Field Guide · Vol. 01',
+    kicker: 'Field Guide · Vol. 02',
     h1Line1: 'Eine Passwort-Policy',
     h1Line2: 'ist kein Bürokratiezwang.',
     intro: {
@@ -316,12 +353,97 @@ const de: Dict = {
       footnoteWrap: (input, storage) =>
         `Die beste Policy nützt nichts, wenn der Server das Passwort mit einem schnellen Hash speichert. Eine Policy regelt die ${input}, der Hash schützt die ${storage}. Erst beides zusammen ergibt Sicherheit.`,
     },
-    footer: 'Hash-Lab Field Guide · Ende von Vol. 01',
+    footer: 'Hash-Lab Field Guide · Ende von Vol. 02',
+  },
+  manager: {
+    kicker: 'Field Guide · Vol. 03',
+    h1Line1: 'Ein Tresor,',
+    h1Line2: 'ein Master-Passwort.',
+    intro: {
+      lead: 'Eine perfekte Policy hilft wenig, wenn du dir trotzdem nur drei Passwörter merken kannst. Ein Passwort-Manager dreht das Problem um: du merkst dir',
+      em: 'ein einziges starkes Master-Passwort',
+      tail: ' — der Rest wird zufällig generiert, verschlüsselt gespeichert und auf Knopfdruck eingefügt.',
+    },
+    chapters: [
+      { num: '01', title: 'Was er löst' },
+      { num: '02', title: 'Private Optionen' },
+      { num: '03', title: 'Anbieter im Vergleich' },
+      { num: '04', title: 'Tresor-Hygiene' },
+    ],
+    s01: {
+      kicker: 'Definition',
+      title: 'Warum überhaupt ein Manager?',
+      body: 'Ein Passwort-Manager ist ein lokal oder cloud-basiert verschlüsselter Tresor. Inhalte werden mit einem aus dem Master-Passwort abgeleiteten Schlüssel (PBKDF2, Argon2id) ver- und entschlüsselt — der Anbieter sieht nichts. Damit verschwinden die drei häufigsten Fehler auf einmal:',
+      pillars: [
+        { num: '01', title: 'Wiederverwendung',  body: 'Jede Seite bekommt ihr eigenes Zufallspasswort. Ein Leak bei Anbieter A trifft Anbieter B nicht mehr.' },
+        { num: '02', title: 'Schwache Passwörter', body: '24 Zeichen aus allen Klassen sind genauso bequem wie „passwort1" — ein Klick und sie sind generiert und eingefügt.' },
+        { num: '03', title: 'Phishing-Schutz',     body: 'Autofill funktioniert nur auf der echten Domain. Eine gefälschte Login-Seite bekommt schlicht nichts ausgefüllt.' },
+      ],
+    },
+    s02: {
+      kicker: 'Privat & Souverän',
+      title: 'Selbstverwaltete und private Optionen',
+      body: 'Nicht jeder will seine Geheimnisse einem US-Anbieter anvertrauen. Drei Wege geben dir die volle Kontrolle — mit jeweils anderem Komfort-Preis.',
+      options: [
+        {
+          headline: 'KeePassXC',
+          tagline: 'Lokaler Tresor, kein Cloud-Zwang',
+          body: 'Open-Source-Desktop-App, die eine einzige .kdbx-Datei mit AES-256 oder ChaCha20 verschlüsselt. Du synchronisierst sie selbst — per Nextcloud, Syncthing oder USB-Stick.',
+          pros: ['Kein Server, kein Account, keine Telemetrie', 'Geprüfter Code, etablierte Krypto', 'Kostenlos auf allen Plattformen'],
+          cons: ['Sync musst du selbst lösen', 'Mobile-Apps weniger komfortabel als Cloud-Anbieter', 'Kein offizielles Familien-Teilen'],
+        },
+        {
+          headline: 'Vaultwarden (self-hosted)',
+          tagline: 'Bitwarden-kompatibler Server auf deiner Hardware',
+          body: 'Eine Rust-Neuimplementierung der Bitwarden-Server-API. Läuft als Docker-Container auf einem Raspberry Pi oder im Heimnetz — die offiziellen Bitwarden-Clients verbinden sich nahtlos.',
+          pros: ['Volle Cloud-Bequemlichkeit ohne Drittanbieter', 'Premium-Features ohne Lizenz', 'Komplette Datenhoheit'],
+          cons: ['Du bist für Backups & Updates verantwortlich', 'Erreichbarkeit von unterwegs erfordert VPN oder Reverse-Proxy', 'Setup braucht etwas Linux-Wissen'],
+        },
+        {
+          headline: 'Passbolt',
+          tagline: 'Team-orientiert, in der EU entwickelt',
+          body: 'Open-Source-Manager mit Fokus auf Team-Sharing über OpenPGP. Self-hosting oder gehostet aus Luxemburg — DSGVO-konform per Default.',
+          pros: ['Granulare Team-Rechte', 'EU-Hosting verfügbar', 'Browser-Add-on prüft Code lokal'],
+          cons: ['Mobile-Apps reifer als früher, aber weniger poliert', 'Privatnutzer-Komfort hinter 1Password & Co.', 'Setup komplexer'],
+        },
+      ],
+      proHeader: 'Stärken',
+      conHeader: 'Schwächen',
+    },
+    s03: {
+      kicker: 'Vergleich',
+      title: 'Bitwarden · 1Password · NordPass',
+      body: 'Die drei populärsten kommerziellen Anbieter im Westen. Alle nutzen Zero-Knowledge-Verschlüsselung — die Unterschiede liegen in Preismodell, Komfort und Krypto-Details.',
+      tableTitle: 'Anbieter-Ledger',
+      cols: { feature: 'Merkmal', bitwarden: 'Bitwarden', onepassword: '1Password', nordpass: 'NordPass' },
+      rows: [
+        { feature: 'Herkunft',           bitwarden: 'USA · Open Source',           onepassword: 'Kanada · proprietär',          nordpass: 'Litauen (Nord Security)' },
+        { feature: 'Tresor-Krypto',      bitwarden: 'AES-256 + PBKDF2/Argon2id',    onepassword: 'AES-256 + PBKDF2 + Secret Key',  nordpass: 'XChaCha20 + Argon2id' },
+        { feature: 'Self-hosting',       bitwarden: 'Ja (offiziell + Vaultwarden)',onepassword: 'Nein',                          nordpass: 'Nein' },
+        { feature: 'Free-Plan',           bitwarden: 'Sehr großzügig',              onepassword: 'Keiner (14 Tage Test)',         nordpass: 'Eingeschränkt (1 Gerät)' },
+        { feature: 'Familien-Tarif',      bitwarden: '≈ 40 €/Jahr · 6 Personen',    onepassword: '≈ 60 €/Jahr · 5 Personen',      nordpass: '≈ 36 €/Jahr · 6 Personen' },
+        { feature: 'Externer Audit',      bitwarden: 'Cure53, Insight Risk',        onepassword: 'Cure53, Onica, KPMG',           nordpass: 'Cure53' },
+        { feature: 'Passkeys',            bitwarden: 'Ja',                          onepassword: 'Ja',                            nordpass: 'Ja' },
+      ],
+      verdict: 'Bitwarden für maximalen Wert und Self-host-Option · 1Password für die kompromissloseste UX und das zusätzliche Secret-Key-Modell · NordPass für moderne Krypto und ein integriertes Nord-Ökosystem.',
+    },
+    s04: {
+      kicker: 'Praxis',
+      title: 'Tresor-Hygiene',
+      body: 'Ein Manager nimmt dir Arbeit ab — aber nicht die Verantwortung für ein paar wenige, sehr wichtige Geheimnisse.',
+      tips: [
+        { headline: 'Master-Passwort als Passphrase',  body: 'Vier bis fünf zufällige Wörter (Diceware) sind merkbar und liefern > 80 Bit Entropie. Niemals wiederverwenden.' },
+        { headline: 'Zweiter Faktor obligatorisch',    body: 'Hardware-Key (YubiKey, NFC-Token) schlägt TOTP-App, TOTP-App schlägt SMS. Ohne 2FA ist der Tresor nur so stark wie das Master-Passwort.' },
+        { headline: 'Recovery-Kit ausdrucken',         body: 'Notfall-Code und Wiederherstellungs-Schlüssel auf Papier — getrennt vom Master-Passwort gelagert. Ohne sie ist ein vergessenes Master-Passwort endgültig.' },
+        { headline: 'Regelmäßiger Health-Check',       body: 'Manager melden geleakte, schwache oder doppelte Passwörter. Einmal im Quartal durchgehen, kritische zuerst rotieren.' },
+      ],
+    },
+    footer: 'Hash-Lab Field Guide · Ende von Vol. 03',
   },
 };
 
 const ar: Dict = {
-  nav: { brand: 'مختبر التجزئة', hash: 'عرض التجزئة', policy: 'سياسة كلمات المرور', language: 'اللغة' },
+  nav: { brand: 'مختبر التجزئة', hash: 'عرض التجزئة', policy: 'سياسة كلمات المرور', manager: 'مدير كلمات المرور', language: 'اللغة' },
   hashPage: {
     title: 'مقارنة خوارزميات التجزئة',
     whatIsHashing: 'ما هي التجزئة؟',
@@ -334,7 +456,7 @@ const ar: Dict = {
       'ملاحظة: bcrypt و Argon2id يعملان هنا بصيغة WASM/JS داخل المتصفح. التنفيذات الأصلية على الخادم أسرع، لكن النسبة إلى SHA-256 تبقى نفسها.',
     algoTitle: 'كيف تعمل الخوارزميات؟',
     algoSubtitle: 'نظرة موجزة على آلية كل خوارزمية.',
-    kicker: 'دليل ميداني · المجلد 02',
+    kicker: 'دليل ميداني · المجلد 01',
     h1Line1: 'أربع دوال،',
     h1Line2: 'أربع سرعات.',
     lead: 'بين تجزئة تسقط في ميكروثانية وأخرى تستغرق نصف ثانية فرق ستّة أوامر من المقدار — وهو بالضبط',
@@ -448,7 +570,7 @@ const ar: Dict = {
     crackLt1s: '< ثانية واحدة',
   },
   policy: {
-    kicker: 'دليل ميداني · المجلد 01',
+    kicker: 'دليل ميداني · المجلد 02',
     h1Line1: 'سياسة كلمات المرور',
     h1Line2: 'ليست إجراءً بيروقراطيًا.',
     intro: {
@@ -510,12 +632,97 @@ const ar: Dict = {
       footnoteWrap: (input, storage) =>
         `أفضل سياسة لا تنفع إذا خزّن الخادم كلمة المرور بتجزئة سريعة. السياسة تحكم ${input}، والتجزئة تحمي ${storage}. الأمان يأتي من الاثنين معًا.`,
     },
-    footer: 'دليل مختبر التجزئة · نهاية المجلد 01',
+    footer: 'دليل مختبر التجزئة · نهاية المجلد 02',
+  },
+  manager: {
+    kicker: 'دليل ميداني · المجلد 03',
+    h1Line1: 'خزينة واحدة،',
+    h1Line2: 'كلمة مرور رئيسية واحدة.',
+    intro: {
+      lead: 'لا تنفع أفضل سياسة إذا كنت تتذكر ثلاث كلمات مرور فقط. مدير كلمات المرور يقلب المعادلة: تتذكر',
+      em: 'كلمة مرور رئيسية واحدة قوية',
+      tail: ' — والباقي يُولَّد عشوائيًا، ويُخزَّن مشفَّرًا، ويُملأ تلقائيًا بنقرة.',
+    },
+    chapters: [
+      { num: '01', title: 'ما الذي يحلّه' },
+      { num: '02', title: 'خيارات خاصة' },
+      { num: '03', title: 'مقارنة المزوّدين' },
+      { num: '04', title: 'نظافة الخزينة' },
+    ],
+    s01: {
+      kicker: 'تعريف',
+      title: 'لماذا مدير كلمات المرور؟',
+      body: 'مدير كلمات المرور هو خزينة مشفَّرة محليًا أو في السحابة. تُشفَّر وتُفكّ المحتويات بمفتاح مشتق من كلمة المرور الرئيسية (PBKDF2 أو Argon2id) — لا يرى المزوّد شيئًا. وهكذا تختفي ثلاث أخطاء شائعة دفعة واحدة:',
+      pillars: [
+        { num: '01', title: 'إعادة الاستخدام', body: 'لكل موقع كلمة مرور عشوائية خاصة. تسرّب لدى المزوّد A لا يطال المزوّد B.' },
+        { num: '02', title: 'الكلمات الضعيفة', body: '24 حرفًا من كل الفئات بنفس سهولة «password1» — نقرة لتوليدها وإدراجها.' },
+        { num: '03', title: 'الحماية من التصيّد', body: 'الملء التلقائي يعمل فقط على النطاق الحقيقي. صفحة دخول مزيّفة لا تحصل على شيء.' },
+      ],
+    },
+    s02: {
+      kicker: 'خاص وسيادي',
+      title: 'خيارات ذاتية الاستضافة والخاصة',
+      body: 'ليس كل شخص يريد تسليم أسراره لمزوّد أمريكي. ثلاثة مسارات تمنحك السيطرة الكاملة — لكل منها ثمن من حيث الراحة.',
+      options: [
+        {
+          headline: 'KeePassXC',
+          tagline: 'خزينة محلية، دون إجبار سحابي',
+          body: 'تطبيق سطح مكتب مفتوح المصدر يشفّر ملفًا واحدًا .kdbx بـ AES-256 أو ChaCha20. أنت تتولّى المزامنة عبر Nextcloud أو Syncthing أو USB.',
+          pros: ['لا خادم ولا حساب ولا قياس', 'كود مدقَّق وعلم تشفير راسخ', 'مجاني على كل المنصّات'],
+          cons: ['عليك حلّ المزامنة بنفسك', 'تطبيقات الجوال أقل راحة من السحابة', 'لا مشاركة عائلية رسمية'],
+        },
+        {
+          headline: 'Vaultwarden (ذاتي الاستضافة)',
+          tagline: 'خادم متوافق مع Bitwarden على عتادك',
+          body: 'إعادة كتابة بـ Rust لـ API خادم Bitwarden. يعمل كحاوية Docker على Raspberry Pi أو شبكة المنزل — وعملاء Bitwarden الرسميون يتصلون بسلاسة.',
+          pros: ['راحة السحابة كاملة دون طرف ثالث', 'ميزات Premium بلا اشتراك', 'سيادة كاملة على البيانات'],
+          cons: ['أنت مسؤول عن النسخ الاحتياطية والتحديثات', 'الوصول من الخارج يحتاج VPN أو Reverse-Proxy', 'الإعداد يتطلب معرفة Linux'],
+        },
+        {
+          headline: 'Passbolt',
+          tagline: 'موجَّه للفرق، مُطوَّر في الاتحاد الأوروبي',
+          body: 'مدير مفتوح المصدر يركّز على مشاركة الفريق عبر OpenPGP. ذاتي الاستضافة أو مستضاف من لوكسمبورغ — متوافق مع GDPR افتراضيًا.',
+          pros: ['صلاحيات دقيقة للفريق', 'استضافة أوروبية متاحة', 'إضافة المتصفح تتحقّق من الكود محليًا'],
+          cons: ['تطبيقات الجوال أنضج لكنها أقل صقلًا', 'راحة الأفراد دون 1Password وأشباهه', 'إعداد أكثر تعقيدًا'],
+        },
+      ],
+      proHeader: 'نقاط القوة',
+      conHeader: 'نقاط الضعف',
+    },
+    s03: {
+      kicker: 'مقارنة',
+      title: 'Bitwarden · 1Password · NordPass',
+      body: 'أشهر ثلاثة مزوّدين تجاريين في الغرب. كلّهم يستخدمون تشفير المعرفة الصفرية — الفروق في التسعير والراحة وتفاصيل التشفير.',
+      tableTitle: 'سجلّ المزوّدين',
+      cols: { feature: 'الميزة', bitwarden: 'Bitwarden', onepassword: '1Password', nordpass: 'NordPass' },
+      rows: [
+        { feature: 'المنشأ',         bitwarden: 'الولايات المتحدة · مفتوح المصدر', onepassword: 'كندا · مغلق',               nordpass: 'ليتوانيا (Nord Security)' },
+        { feature: 'تشفير الخزينة',  bitwarden: 'AES-256 + PBKDF2/Argon2id',      onepassword: 'AES-256 + PBKDF2 + Secret Key', nordpass: 'XChaCha20 + Argon2id' },
+        { feature: 'الاستضافة الذاتية', bitwarden: 'نعم (رسمي + Vaultwarden)',      onepassword: 'لا',                          nordpass: 'لا' },
+        { feature: 'خطة مجانية',      bitwarden: 'سخيّة جدًا',                      onepassword: 'لا (14 يومًا تجريبًا)',        nordpass: 'محدودة (جهاز واحد)' },
+        { feature: 'باقة العائلة',    bitwarden: '≈ 40 € سنويًا · 6 أشخاص',         onepassword: '≈ 60 € سنويًا · 5 أشخاص',       nordpass: '≈ 36 € سنويًا · 6 أشخاص' },
+        { feature: 'تدقيق خارجي',     bitwarden: 'Cure53، Insight Risk',           onepassword: 'Cure53، Onica، KPMG',          nordpass: 'Cure53' },
+        { feature: 'Passkeys',        bitwarden: 'نعم',                            onepassword: 'نعم',                         nordpass: 'نعم' },
+      ],
+      verdict: 'Bitwarden لأفضل قيمة وإمكانية الاستضافة الذاتية · 1Password لتجربة استخدام بلا تنازل ولنموذج Secret Key الإضافي · NordPass لتشفير حديث ومنظومة Nord المتكاملة.',
+    },
+    s04: {
+      kicker: 'تطبيق',
+      title: 'نظافة الخزينة',
+      body: 'المدير يخفّف العبء عنك — لكنه لا يعفيك من مسؤولية بضعة أسرار قليلة بالغة الأهمية.',
+      tips: [
+        { headline: 'كلمة مرور رئيسية بصيغة عبارة', body: 'أربع إلى خمس كلمات عشوائية (Diceware) قابلة للحفظ وتعطي أكثر من 80 بت إنتروبيا. لا تعد استخدامها أبدًا.' },
+        { headline: 'مصادقة ثانية إلزامية',          body: 'مفتاح عتادي (YubiKey، NFC) أقوى من تطبيق TOTP، وتطبيق TOTP أقوى من SMS. بلا 2FA تكون قوة الخزينة من قوة كلمة المرور فقط.' },
+        { headline: 'اطبع طقم الاسترداد',            body: 'رمز الطوارئ ومفتاح الاسترداد على ورق — مفصول عن كلمة المرور الرئيسية. بدونهما النسيان نهائي.' },
+        { headline: 'فحص دوري للصحة',                body: 'المديرون يبلّغون عن كلمات مرور مسرّبة أو ضعيفة أو مكرّرة. راجعها كل ربع سنة، ابدأ بالأكثر حساسية.' },
+      ],
+    },
+    footer: 'دليل مختبر التجزئة · نهاية المجلد 03',
   },
 };
 
 const uk: Dict = {
-  nav: { brand: 'Hash-Lab', hash: 'Hash-демо', policy: 'Парольна політика', language: 'Мова' },
+  nav: { brand: 'Hash-Lab', hash: 'Hash-демо', policy: 'Парольна політика', manager: 'Менеджер паролів', language: 'Мова' },
   hashPage: {
     title: 'Порівняння хеш-алгоритмів',
     whatIsHashing: 'Що таке хешування?',
@@ -528,7 +735,7 @@ const uk: Dict = {
       'Примітка: bcrypt і Argon2id тут виконуються як WASM/JS у браузері. Серверні нативні реалізації швидші, але співвідношення до SHA-256 залишається тим самим.',
     algoTitle: 'Як працюють алгоритми?',
     algoSubtitle: 'Короткий огляд внутрішньої роботи кожного методу.',
-    kicker: 'Польовий путівник · Том 02',
+    kicker: 'Польовий путівник · Том 01',
     h1Line1: 'Чотири функції,',
     h1Line2: 'чотири швидкості.',
     lead: 'Між хешем, що падає за мікросекунду, і тим, що потребує півсекунди, — шість порядків величини. Саме це і є',
@@ -642,7 +849,7 @@ const uk: Dict = {
     crackLt1s: '< 1 секунди',
   },
   policy: {
-    kicker: 'Польовий путівник · Том 01',
+    kicker: 'Польовий путівник · Том 02',
     h1Line1: 'Парольна політика',
     h1Line2: 'не є бюрократичним примусом.',
     intro: {
@@ -704,7 +911,92 @@ const uk: Dict = {
       footnoteWrap: (input, storage) =>
         `Найкраща політика марна, якщо сервер зберігає пароль швидким хешем. Політика регулює ${input}, а хеш захищає ${storage}. Безпека виникає лише разом.`,
     },
-    footer: 'Hash-Lab Польовий путівник · Кінець Тому 01',
+    footer: 'Hash-Lab Польовий путівник · Кінець Тому 02',
+  },
+  manager: {
+    kicker: 'Польовий путівник · Том 03',
+    h1Line1: 'Один сейф,',
+    h1Line2: 'один майстер-пароль.',
+    intro: {
+      lead: 'Найкраща політика марна, якщо ви все одно пам’ятаєте лише три паролі. Менеджер паролів змінює задачу: ви запам’ятовуєте',
+      em: 'один сильний майстер-пароль',
+      tail: ', а решту згенеровано випадково, збережено зашифрованим і вставляється одним кліком.',
+    },
+    chapters: [
+      { num: '01', title: 'Що він розв’язує' },
+      { num: '02', title: 'Приватні варіанти' },
+      { num: '03', title: 'Порівняння сервісів' },
+      { num: '04', title: 'Гігієна сейфа' },
+    ],
+    s01: {
+      kicker: 'Визначення',
+      title: 'Навіщо взагалі менеджер?',
+      body: 'Менеджер паролів — це локальний або хмарний зашифрований сейф. Вміст шифрується/розшифровується ключем, похідним від майстер-пароля (PBKDF2, Argon2id), — провайдер нічого не бачить. Так одразу зникають три найчастіші помилки:',
+      pillars: [
+        { num: '01', title: 'Повторне використання', body: 'Для кожного сайту — окремий випадковий пароль. Витік у провайдера A більше не зачіпає провайдера B.' },
+        { num: '02', title: 'Слабкі паролі',         body: '24 символи з усіх класів так само зручні, як «password1» — клік, і вони згенеровані та вставлені.' },
+        { num: '03', title: 'Захист від фішингу',    body: 'Автозаповнення спрацьовує лише на справжньому домені. Підроблена сторінка не отримує нічого.' },
+      ],
+    },
+    s02: {
+      kicker: 'Приватне і суверенне',
+      title: 'Самокеровані та приватні варіанти',
+      body: 'Не кожен хоче довіряти свої секрети американському провайдеру. Три шляхи дають повний контроль — кожен має свою ціну за зручність.',
+      options: [
+        {
+          headline: 'KeePassXC',
+          tagline: 'Локальний сейф, без хмари',
+          body: 'Open-source десктоп-застосунок, що шифрує єдиний .kdbx-файл AES-256 або ChaCha20. Синхронізацію робите самі — Nextcloud, Syncthing, USB.',
+          pros: ['Жодного сервера, акаунта чи телеметрії', 'Перевірений код, перевірена криптографія', 'Безкоштовно на всіх платформах'],
+          cons: ['Синхронізацію треба налаштувати самому', 'Мобільні застосунки менш зручні, ніж у хмари', 'Немає офіційного сімейного спільного доступу'],
+        },
+        {
+          headline: 'Vaultwarden (self-hosted)',
+          tagline: 'Сумісний з Bitwarden сервер на вашому обладнанні',
+          body: 'Rust-переписане API сервера Bitwarden. Працює як Docker-контейнер на Raspberry Pi або в домашній мережі — офіційні клієнти Bitwarden підключаються без зусиль.',
+          pros: ['Уся зручність хмари без третьої сторони', 'Premium-функції без ліцензії', 'Повна суверенність даних'],
+          cons: ['Бекапи та оновлення — ваша відповідальність', 'Доступ ззовні потребує VPN або reverse-proxy', 'Налаштування вимагає знань Linux'],
+        },
+        {
+          headline: 'Passbolt',
+          tagline: 'Командний, розроблений у ЄС',
+          body: 'Open-source менеджер з фокусом на командному обміні через OpenPGP. Self-hosting або хостинг із Люксембургу — GDPR-сумісний за замовчуванням.',
+          pros: ['Гранулярні командні права', 'Доступний EU-хостинг', 'Розширення браузера перевіряє код локально'],
+          cons: ['Мобільні застосунки зріліші, але менш виглянсовані', 'Зручність для приватних користувачів нижча, ніж у 1Password', 'Складніше налаштування'],
+        },
+      ],
+      proHeader: 'Сильні сторони',
+      conHeader: 'Слабкі сторони',
+    },
+    s03: {
+      kicker: 'Порівняння',
+      title: 'Bitwarden · 1Password · NordPass',
+      body: 'Три найпопулярніші комерційні провайдери на Заході. Усі застосовують zero-knowledge — різниця в ціні, зручності та деталях криптографії.',
+      tableTitle: 'Реєстр провайдерів',
+      cols: { feature: 'Ознака', bitwarden: 'Bitwarden', onepassword: '1Password', nordpass: 'NordPass' },
+      rows: [
+        { feature: 'Походження',     bitwarden: 'США · Open Source',             onepassword: 'Канада · пропрієтарний',      nordpass: 'Литва (Nord Security)' },
+        { feature: 'Криптографія',   bitwarden: 'AES-256 + PBKDF2/Argon2id',      onepassword: 'AES-256 + PBKDF2 + Secret Key', nordpass: 'XChaCha20 + Argon2id' },
+        { feature: 'Self-hosting',   bitwarden: 'Так (офіційно + Vaultwarden)',  onepassword: 'Ні',                          nordpass: 'Ні' },
+        { feature: 'Безкоштовний план', bitwarden: 'Дуже щедрий',                onepassword: 'Немає (14 днів тестово)',      nordpass: 'Обмежений (1 пристрій)' },
+        { feature: 'Сімейний тариф', bitwarden: '≈ 40 €/рік · 6 осіб',           onepassword: '≈ 60 €/рік · 5 осіб',          nordpass: '≈ 36 €/рік · 6 осіб' },
+        { feature: 'Зовнішній аудит', bitwarden: 'Cure53, Insight Risk',          onepassword: 'Cure53, Onica, KPMG',           nordpass: 'Cure53' },
+        { feature: 'Passkeys',        bitwarden: 'Так',                          onepassword: 'Так',                          nordpass: 'Так' },
+      ],
+      verdict: 'Bitwarden — максимум цінності й опція self-host · 1Password — безкомпромісний UX і додатковий Secret Key · NordPass — сучасна криптографія й інтегрована екосистема Nord.',
+    },
+    s04: {
+      kicker: 'Практика',
+      title: 'Гігієна сейфа',
+      body: 'Менеджер знімає роботу, але не знімає відповідальності за кілька найважливіших секретів.',
+      tips: [
+        { headline: 'Майстер-пароль як парольна фраза', body: 'Чотири-п’ять випадкових слів (Diceware) запам’ятовуються і дають > 80 біт ентропії. Ніколи не повторюйте.' },
+        { headline: 'Другий фактор обов’язковий',       body: 'Апаратний ключ (YubiKey, NFC) сильніший за TOTP-додаток, TOTP сильніший за SMS. Без 2FA сейф такий міцний, як майстер-пароль.' },
+        { headline: 'Роздрукуйте recovery-kit',         body: 'Аварійний код і ключ відновлення — на папері, окремо від майстер-пароля. Без них забутий майстер — назавжди.' },
+        { headline: 'Регулярний health-check',          body: 'Менеджери звітують про витоки, слабкі чи дублікати. Раз на квартал переглядайте, починаючи з найкритичніших.' },
+      ],
+    },
+    footer: 'Hash-Lab Польовий путівник · Кінець Тому 03',
   },
 };
 

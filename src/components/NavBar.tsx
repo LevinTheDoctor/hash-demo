@@ -1,7 +1,7 @@
 import { useT } from '../i18n/I18nContext';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
-export type Route = 'hash' | 'policy';
+export type Route = 'hash' | 'policy' | 'manager';
 
 interface NavBarProps {
   route: Route;
@@ -11,8 +11,9 @@ interface NavBarProps {
 export function NavBar({ route, onNavigate }: NavBarProps) {
   const { t } = useT();
   const links: { id: Route; label: string; vol: string }[] = [
-    { id: 'hash',   label: t.nav.hash,   vol: 'Vol. 02' },
-    { id: 'policy', label: t.nav.policy, vol: 'Vol. 01' },
+    { id: 'hash',    label: t.nav.hash,    vol: 'Vol. 01' },
+    { id: 'policy',  label: t.nav.policy,  vol: 'Vol. 02' },
+    { id: 'manager', label: t.nav.manager, vol: 'Vol. 03' },
   ];
 
   return (
