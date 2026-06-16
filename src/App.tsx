@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { HashInput } from './components/HashInput';
 import { HashResultCard } from './components/HashResultCard';
 import { TimingChart } from './components/TimingChart';
+import { AlgorithmExplainer } from './components/AlgorithmExplainer';
 import { hashAll } from './lib/hashers';
 import type { AlgorithmName, HashResult } from './types/hash';
 
@@ -62,6 +63,16 @@ export default function App() {
             </p>
           </div>
         )}
+
+        <div className="mt-12">
+          <h2 className="text-xl font-semibold">Wie funktionieren die Algorithmen?</h2>
+          <p className="mt-1 text-sm text-gray-600">
+            Eine kurze Übersicht über das Innenleben jedes Verfahrens.
+          </p>
+          <div className="mt-4">
+            <AlgorithmExplainer />
+          </div>
+        </div>
       </div>
     </div>
   );
