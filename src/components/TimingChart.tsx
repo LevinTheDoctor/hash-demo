@@ -16,10 +16,10 @@ interface TimingChartProps {
 }
 
 const COLORS: Record<AlgorithmName, string> = {
-  'SHA-256': '#E24B4A',
-  bcrypt: '#378ADD',
-  scrypt: '#1D9E75',
-  Argon2id: '#639922',
+  'SHA-256': '#B91C1C',
+  bcrypt: '#B45309',
+  scrypt: '#1E40AF',
+  Argon2id: '#15803D',
 };
 
 const ORDER: AlgorithmName[] = ['SHA-256', 'bcrypt', 'scrypt', 'Argon2id'];

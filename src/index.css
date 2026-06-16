@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@theme {
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --color-paper: #F7F4ED;
+  --color-paper-edge: #E8E2D3;
+  --color-ink: #0E1116;
+  --color-ink-soft: #5A5750;
+  --color-crimson: #B91C1C;
+  --color-pine: #15803D;
+  --color-ledger: #1E40AF;
+}
