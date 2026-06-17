@@ -3,7 +3,7 @@ import { Globe, Check } from 'lucide-react';
 import { useT } from '../i18n/I18nContext';
 import { LANG_META, type Lang } from '../i18n/translations';
 
-const ORDER: Lang[] = ['de', 'ar', 'uk'];
+const ORDER: Lang[] = ['de', 'ar', 'uk', 'fa'];
 
 export function LanguageSwitcher() {
   const { lang, setLang, t } = useT();
